@@ -550,6 +550,16 @@ static __strong NSData *CRLFCRLF;
     [_urlRequest.allHTTPHeaderFields enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
         CFHTTPMessageSetHeaderFieldValue(request, (__bridge CFStringRef)key, (__bridge CFStringRef)obj);
     }];
+
+    //Cookies!
+    NSArray *newcookies = [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookiesForURL:_url];
+    NSString* cookieString = @"";
+    
+    for (NSHTTPCookie* cookie in newcookies)
+    {
+        NSString *temp = [NSString stringWithFormat: @"%@=%@; ", cookie.name , cookie.value];
+        cookieString = [cookieString stringByAppendingString:temp];
+    }
     
     NSData *message = CFBridgingRelease(CFHTTPMessageCopySerializedMessage(request));
     
