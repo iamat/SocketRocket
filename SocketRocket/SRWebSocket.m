@@ -561,6 +561,8 @@ static __strong NSData *CRLFCRLF;
         cookieString = [cookieString stringByAppendingString:temp];
     }
     
+    CFHTTPMessageSetHeaderFieldValue(request, CFSTR("Cookie"), (__bridge CFStringRef)cookieString);
+    
     NSData *message = CFBridgingRelease(CFHTTPMessageCopySerializedMessage(request));
     
     CFRelease(request);
